@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Grid3x3, MessageCircle, User, Plus } from 'lucide-react'
+import { useNotificationStore } from '@/stores/notification-store'
 
 export function MobileFooter() {
   const pathname = usePathname()
+  const { unreadCount } = useNotificationStore()
 
   const isActive = (path: string) => {
     return pathname === path
@@ -66,7 +68,11 @@ export function MobileFooter() {
           }`}
           title="Messages"
         >
+          <span   className="relative inline-flex ">
           <MessageCircle className='w-6 h-6' strokeWidth={2} />
+                <span className="absolute text-xs text-center bg-red-500 rounded-full w-4 h-4 text-white -right-2">{unreadCount}</span>
+           
+            </span>
         </Link>
 
         {/* Account */}

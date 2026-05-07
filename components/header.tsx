@@ -46,12 +46,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            {/* <div className="w-10 h-10 bg-gradient-to-br from-emerald-800 to-amber-400 rounded-lg flex items-center justify-center shadow-sm">
-              <ShoppingBag className="w-6 h-6 text-white" />
-            </div> */}
-            <span className="text-3xl font-bold cat-heading  bg-gradient-to-r from-emerald-800 to-amber-600 bg-clip-text text-transparent">
-              BuyAm
-            </span>
+            <div className=" w-12 h-12 lg:w-16 lg:h-16 relative">
+              <Image
+                src={'/logo/buyam.png'}
+                fill
+                className="w-12 h-12 lg:w-16 lg:h-16 absolute"
+                alt="logo"
+              />
+            </div>
+            
           </Link>
 
           {/* Desktop Navigation */}
@@ -90,14 +93,14 @@ export default function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     size="icon"
-                    className="relative bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-full w-10 h-10 p-0 overflow-hidden"
+                    className="relative  w-8 h-8 lg:w-10 lg:h-10 p-0 overflow-hidden"
                   >
                     <Image
                       src={user.avatar || "/default-avatar.png"}
                       alt="User Avatar"
                       width={40}
                       height={40}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-8 h-8 lg:w-10 lg:h-10 rounded-full object-cover"
                     />
                   </Button>
                 </DropdownMenuTrigger>
@@ -163,7 +166,7 @@ export default function Header() {
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
-                  {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  {open ? <X className="h-6 w-6" /> : <Menu className="h-8 w-8" />}
                 </Button>
               </SheetTrigger>
 

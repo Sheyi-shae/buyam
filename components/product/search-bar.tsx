@@ -97,11 +97,11 @@ export default function SearchBar(
         <div className="relative z-10 max-w-6xl mx-auto  sm:px-6 lg:px-8 py-12">
           {/* Heading */}
           <div className="text-center mb-6">
-            <h1 className="text-4xl sm:text-5xl cat-heading mb-3 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl cat-heading mb-3 tracking-tight">
               Discover What You&apos;re Looking For
             </h1>
             <p className="text-base font-light sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Search across thousands of products, vendors, and services in your
+              Search across thousands of products, and services in your
               area
             </p>
           </div>
@@ -109,13 +109,13 @@ export default function SearchBar(
           {/* Main Search Container */}
           <div
             ref={containerRef}
-            className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100"
+            className="relative overflow-hidden bg-slate-50 shadow-md "
           >
             {/* Search Input Section */}
-            <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div className="p-0 sm:p-5 grid grid-cols-1  lg:grid-cols-5 gap-3">
               {/* Search Input */}
               
-                <div className="relative  mt-7 flex items-center sm:col-span-2">
+                <div className="relative  mt-7 flex items-center col-span-2 sm:col-span-2">
                   <Search className="absolute left-4 w-5 h-5 text-emerald-600 pointer-events-none" />
                   <Input
                     type="text"
@@ -145,7 +145,7 @@ export default function SearchBar(
               {/* Filters Grid */}
             
                 {/* State Select */}
-                <div className="sm:col-span-1">
+                <div className="col-span-1 sm:col-span-1">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     State
                   </label>
@@ -218,10 +218,10 @@ export default function SearchBar(
                     {filter}
                   </button>
                 ))}
-              <X className="cursor-pointer mt-1 w-4 h-4 text-slate-500 " onClick={() => {
+              {search.length > 0 && <X className="cursor-pointer mt-1 w-4 h-4 text-slate-500 " onClick={() => {
                 clearSearches();
                
-              }}/>
+              }} />}
               </div>
 
             {/* Suggestions Dropdown */}

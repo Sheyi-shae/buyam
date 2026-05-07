@@ -3,8 +3,8 @@ import Link from 'next/link';
 import React from 'react'
 
 interface HomeTitleHeaderProps {
-    title: string;
-    desc: string;
+    title?: string;
+    desc?: string;
     link?: boolean;
 }
 
@@ -22,12 +22,12 @@ export default function HomeTitleHeader({ title, desc, link = false }: HomeTitle
                 }}
               >
                 <div>
-                  <div className="cat-eyebrow">
+                  <div className={`cat-eyebrow ${title ? "text-xs" :"text-sm lg:text-base"}`}>
                     <span className="eyebrow-dot" />
                     {desc}
                   </div>
                   <h2
-                    className="cat-heading"
+                    className="cat-heading "
                     style={{
                       fontSize: 'clamp(1.7rem, 1.5vw, 1.2rem)',
                       fontWeight: 700,

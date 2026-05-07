@@ -14,6 +14,15 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "BuyAm",
   description: "Discover Everything",
+  icons: {
+   icon: [
+      { url: "/logo/favicon.ico", sizes: "any" },
+      { url: "/logo/favicon-16x16.png", type: "image/png" },
+      { url: "/logo/favicon-32x32.png", type: "image/png" },
+    ],
+    shortcut: "/logo/favicon.ico",
+    apple: "/logo/favicon-32x32.png",
+  },
 };
 
 export default function RootLayout({

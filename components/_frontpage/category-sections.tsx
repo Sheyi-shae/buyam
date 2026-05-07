@@ -6,6 +6,7 @@ import SectionReveal from './section-reveal'
 import { PageLoader } from '../loading-spinners'
 import { Skeleton } from '../ui/skeleton'
 import HomeTitleHeader from './home-title-header'
+import { Badge } from '../ui/badge'
 
 const getItemCountLabel = (count: number) =>
   `${count.toLocaleString()} ${count === 1 ? 'listing' : 'listings'}`
@@ -21,14 +22,14 @@ export default function CategorySections({ category,isLoading }: CategorySection
     
         <SectionReveal>
           <section
-        className="cat-section mt-4">
+        className="cat-section mt-10">
         
 
 
         <div>
 
-          <div className='grid place-items-center'> 
-          <HomeTitleHeader title="Explore Categories" desc="Browse by category" />
+          <div className='grid place-items-center '> 
+          <HomeTitleHeader  desc="Browse by category" />
           </div>  
           {isLoading ? (
           
@@ -50,7 +51,7 @@ export default function CategorySections({ category,isLoading }: CategorySection
           ): (
             
                  /* ── Grid ── */
-              <div className="cat-grid">
+              <div className="grid grid-cols-3  md:grid-cols-4 lg:grid-cols-6 gap-2">
                 {category.map((cat) => (
                   <Link
                     key={cat.name}
@@ -62,15 +63,16 @@ export default function CategorySections({ category,isLoading }: CategorySection
                       <div className="cat-icon-wrap">
                         <Image
                           src={cat.avatar}
-                          width={26}
-                          height={26}
+                          width={200}
+                          height={200}
+                          className='w-[100px] h-[80px] rounded-sm'
                           alt={`${cat.name} icon`}
                         />
                       </div>
-                      <p className="cat-name">{cat.name}</p>
-                      <span className="cat-badge">
+                      <p className=" text-xs leading-3 lg:text-sm font-semibold text-slate-900 capitalize line-clamp-2 min-h-[28px]">{cat.name}</p>
+                      <Badge className="text-[10px] lg:text-xs bg-amber-50 text-amber-600">
                         {getItemCountLabel(cat?.products?.length || 0)}
-                      </span>
+                      </Badge>
                     </div>
                   </Link>
                 ))}

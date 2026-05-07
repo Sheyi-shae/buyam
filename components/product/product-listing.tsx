@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button"
 import { ProductListing } from "@/types/users"
 import { timeAgo } from "@/utils/date-format"
 import { formatCurrency } from "@/utils/format-currency"
-import { ArrowRight, Clock, MapPin, User2, UserCheck } from "lucide-react"
+import { ArrowRight, Clock, LayoutList, MapPin, User2, UserCheck } from "lucide-react"
 import { ProductCardSlide } from "../animations/product-slider"
 import LoadingSpinners from "../loading-spinners"
 import ProductSorting from "./product-sorting"
 import Link from "next/link"
 import { ProductCardSkeleton } from "../skeletons/product-card-sketeton"
+import { EmptyItem } from "../_frontpage/empty-item"
 
 
 
@@ -43,7 +44,7 @@ export const getConditionColor = (condition: string) => {
   }
 }
 
-export default function ProductGrid({defaultProducts,queryParams, setDefaultProducts, isLoading, handleNextPage, handlePreviousPage, paginationMeta, page }: ProductGridProps) {
+export default function ProductGrid({defaultProducts, setDefaultProducts, isLoading, handleNextPage, handlePreviousPage, paginationMeta, page }: ProductGridProps) {
 
 
   // sort product by price low to high
@@ -70,7 +71,7 @@ export default function ProductGrid({defaultProducts,queryParams, setDefaultProd
  
 
   return (
-    <div className="lg:col-span-3">
+    <div className="lg:col-span-3 pb-8">
       <ProductSorting
       sortProductsByMostPopular={sortProductsByMostPopular}
       sortProductsByMostRecent={sortProductsByMostRecent}
@@ -89,11 +90,9 @@ export default function ProductGrid({defaultProducts,queryParams, setDefaultProd
    }
 </div>
     
-{defaultProducts.length===0 && (<p className="text-center text-muted-foreground">No products found.</p>
-)}
-      
-      
-      <div className="pcard-grid sm:grid-cols-2">
+      {defaultProducts.length > 0 ? (
+  
+        <div className="pcard-grid sm:grid-cols-2">
         {defaultProducts?.map((item) => (
           <div
             key={item.id}
@@ -148,6 +147,19 @@ export default function ProductGrid({defaultProducts,queryParams, setDefaultProd
             </div>
         ))}
       </div>
+      ):(
+      <>
+    
+      <EmptyItem
+        icon={LayoutList}
+        title="No items found in this category"
+      />
+      </>
+      
+
+)}
+      
+      
       {/* pagination here */}
       {paginationMeta  && (
             <div className="flex justify-center items-center gap-4 pt-6">

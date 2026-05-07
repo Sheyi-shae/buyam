@@ -1,4 +1,5 @@
 import { Loader2, X } from "lucide-react"
+import Image from "next/image"
 
 export default function ConversationHeader({
   isLoading,
@@ -27,9 +28,14 @@ export default function ConversationHeader({
 
       <div className="p-3 border-b mt-1 border-border">
         {!isLoading && !isError && (
-          <p className="font-bold text-lg">
-            Buy<span className="text-amber-500">am</span>
-          </p>
+           <div className=" w-12 h-10 lg:w-16 lg:h-16 relative">
+                        <Image
+                          src={'/logo/buyam.png'}
+                          fill
+                          className="w-12 h-10 lg:w-16 lg:h-16 absolute"
+                          alt="logo"
+                        />
+                      </div>
         )}
       </div>
     </>
