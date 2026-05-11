@@ -32,8 +32,8 @@ export default function Hero() {
 
   return (
     <div className="text-center">
-      <h1 className="text-3xl md:text-6xl font-bold gradient-char mb-4  md:leading-tight">
-        Discover Everything
+      <h1 className="text-3xl md:text-6xl font-bold mb-4  md:leading-tight">
+        <span className="tracking-in-expand   gradient-char">Discover Everything</span>
         <span
   ref={textRef}
   className="block px-16 md:px-0 text-gray-900 cat-heading"

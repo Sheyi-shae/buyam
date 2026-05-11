@@ -25,47 +25,7 @@
         .cat-card-anim:nth-child(12) { animation-delay: 0.62s; }
 
         /* ── Card ── */
-        .cat-card {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 1.4rem 1rem 1.2rem;
-          border: 1.5px solid var(--border, #e0e0dc);
-          border-radius: var(--radius, 0.625rem);
-          background: var(--card, #ffffff);
-          cursor: pointer;
-          overflow: hidden;
-          transition:
-            border-color 0.25s ease,
-            box-shadow   0.25s ease,
-            transform    0.28s cubic-bezier(0.22,1,0.36,1);
-        }
-
-        /* Green wash that slides in from bottom */
-        .cat-card::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(160deg, #f0fdf4 0%, #dcfce7 100%);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 0;
-          border-radius: inherit;
-        }
-
-        .cat-card:hover {
-          border-color: var(--ring, #2ecc71);
-          box-shadow:
-            0 0 0 3px rgba(46,204,113,0.10),
-            0 10px 30px -8px rgba(46,204,113,0.20),
-            0 2px 8px -2px rgba(0,0,0,0.06);
-          transform: translateY(-5px);
-        }
-        .cat-card:hover::after { opacity: 1; }
-
+        
         /* ── Icon wrapper ── */
         .cat-icon-wrap {
           position: relative;
@@ -85,7 +45,7 @@
             transform      0.32s cubic-bezier(0.34,1.56,0.64,1);
         }
         .cat-card:hover .cat-icon-wrap {
-          background: var(--ring, #2ecc71);
+          
           border-color: var(--chart-2, #27ae60);
           transform: scale(1.13) rotate(-5deg);
         }

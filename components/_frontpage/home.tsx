@@ -38,7 +38,7 @@ const products = useMemo(
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-amber-50">
       
 
-      <section className="relative pt-28 pb-32 overflow-hidden">
+      <section className="relative pt-28  overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-100 via-amber-50 to-emerald-50 opacity-50" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* hero  */}

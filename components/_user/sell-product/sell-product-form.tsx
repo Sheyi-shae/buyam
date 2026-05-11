@@ -5,28 +5,27 @@ import { useCallback, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-import {
-  CheckCircle2,
-  Zap,
-} from 'lucide-react';
-import { toast } from 'sonner';
-import axios from 'axios';
-import z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import TextInputField, { SelectInput, TextAreaField } from '@/components/forms/_reuseable-form-components/text-input-field';
 import { FieldGroup } from '@/components/ui/field';
-import TextInputField, { SelectInput,  TextAreaField } from '@/components/forms/_reuseable-form-components/text-input-field';
+import { Spinner } from '@/components/ui/spinner';
+import location from '@/location.json';
+import { useAuthStore } from '@/stores/auth-stores';
+import { CategoryD, } from '@/types/users';
+import apiPrivate, { parseErrorMessage } from '@/utils/api-private';
 import { useFetchPrivateData } from '@/utils/fetch-hooks';
-import { CategoryD,  } from '@/types/users';
-import location from '@/location.json'
 import { formatCurrency } from '@/utils/format-currency';
 import { getFileFingerprint } from '@/utils/image-fingerprint';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import {
+  CheckCircle2
+} from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import z from 'zod';
 import ImageUploadArea from './image-upload-area';
 import ProductPreview from './product-preview';
-import { useAuthStore } from '@/stores/auth-stores';
-import apiPrivate, { parseErrorMessage } from '@/utils/api-private';
-import { Spinner } from '@/components/ui/spinner';
-import { is } from 'zod/v4/locales';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -71,6 +70,7 @@ export default function SellProductForm() {
     const [uploading, setUploading] = useState(false)
     const [mediaPreview, setMediaPreview] = useState<MediaItem[]>([])
   const { user } = useAuthStore()
+  const router = useRouter()
  
   // fetch categories
     const { data,isLoading } = useFetchPrivateData(
@@ -256,6 +256,7 @@ const uploadSingleFile = async (file: File, fingerprint: string) => {
       setLoading(true)
       const { data } = await apiPrivate.post('/product/post', productData)
       toast.success(data.message)
+      router.replace('/')
       
     } catch (error: unknown) {
       toast.error(parseErrorMessage(error))
