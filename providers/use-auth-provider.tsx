@@ -63,7 +63,7 @@ export function AuthProvider({ children, protection, msg = '' }: AuthProviderPro
     socket?.emit("join", user.id);
   }, [user?.id, isConnected   ,socket]);
 
-console.log(user?.online)
+
   // Loading state
   if (protection && isLoading) {
     return (

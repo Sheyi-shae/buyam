@@ -5,6 +5,6 @@ export default async function page({ params }: { params: { subcategory: string, 
 
   const {product } = await params;
   return (
-    <div> <ProductDetailsPage slug={product} /></div>
+    <div className=""> <ProductDetailsPage slug={product} /></div>
   )
 }

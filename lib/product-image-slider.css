@@ -1,16 +1,14 @@
 
-     /* @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap'); */
-
-        /* Block all image saving gestures globally within the gallery */
+     /* Block all image saving gestures globally within the gallery */
         .gallery-root img,
         .lightbox-inner img {
           -webkit-user-select: none;
           user-select: none;
           -webkit-touch-callout: none; /* iOS long-press menu */
-          pointer-events: none;        /* blocks right-click & drag on the <img> itself */
+          pointer-events: none;        
         }
 
-        /* The transparent shield div sits above the image and absorbs all pointer events */
+        
         .img-shield {
           position: absolute;
           inset: 0;
@@ -188,6 +186,7 @@
         .gallery-thumbs {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
           padding: 10px 12px;
           overflow-x: auto;

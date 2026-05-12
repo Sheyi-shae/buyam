@@ -101,7 +101,7 @@ export default function ProductInfoPanel({ productData }: { productData: Product
           className="flex-1 flex items-center justify-center space-x-2 py-3 px-6 rounded-lg  text-emerald-600 border-2 border-emerald-600 hover:bg-emerald-50 ">
            <PhoneCall size={20} className='mr-1' />       
           {showNumber ?  
-            <a href={`tel:${'08148299505'}`} className="underline">{'08148299505'}</a>
+            <a href={productData.phone ? String(productData.phone) : "#"} className="underline">{productData.phone ? productData.phone : "Unavailable"}</a>
             : "View Phone Number"}
         </button>
 

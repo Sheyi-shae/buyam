@@ -32,7 +32,7 @@ const averageRating =
         </div>
         <div>
           <p className="font-semibold text-gray-800">
-            {productData.seller.name}
+            {productData.seller.storeName ? productData.seller.storeName : productData.seller.name}
           </p>
           {productData.seller.verifiedSeller ? (
             <span className="text-xs  text-white bg-emerald-500 px-2 py-0.5 rounded-full inline-flex mt-0.5">
@@ -59,6 +59,14 @@ const averageRating =
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-600">Reviews:</span>
           <span className=" text-gray-800">{reviews.length}</span>
+
+        </div>
+        
+        <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-600">Last seen:</span>
+          <span className=" text-gray-800">{productData.seller.online ? 'Online' : timeAgo(productData.seller?.lastSeen)}</span>
+
+        
         
               </div>
         <div className="flex items-center justify-between">

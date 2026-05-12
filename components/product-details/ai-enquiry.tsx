@@ -35,7 +35,7 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
   }, [messages, isLoading]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowHint(false), 6000)
+    const timer = setTimeout(() => setShowHint(false), 20000)
     return () => clearTimeout(timer)
   }, [])
 
@@ -62,10 +62,10 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-col items-end gap-3 z-50">
+    <div className="fixed bottom-20 md:bottom-6 right-2 md:right-6 flex flex-col items-end gap-3 z-50">
       {/* Animated Hint Bubble */}
       {showHint && (
-        <div className="bg-white border border-amber-100 text-amber-800 text-sm py-2 px-4 rounded-2xl shadow-xl animate-bounce">
+        <div className="bg-white text-xs  border border-amber-100 text-amber-800 md:text-sm py-2 px-4 rounded-2xl shadow-xl animate-bounce">
           <span className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
             Ask about this item!
@@ -75,7 +75,7 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button size="icon" className="h-14 w-14 rounded-full shadow-2xl bg-gradient-to-tr from-amber-500 to-orange-600 hover:scale-105 transition-transform">
+          <Button size="icon" className="h-14 w-14 animate-spin rounded-full shadow-2xl bg-gradient-to-tr from-amber-500 to-orange-600 hover:scale-105 transition-transform">
             <Sparkles className="w-6 h-6 text-white" />
           </Button>
         </SheetTrigger>

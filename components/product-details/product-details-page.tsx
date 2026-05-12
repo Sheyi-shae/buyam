@@ -12,6 +12,9 @@ import SellerInfoCard from './seller-info-card';
 import apiPublic from '@/utils/api-public';
 import { useQueryClient } from '@tanstack/react-query';
 import AiEnquiry from './ai-enquiry';
+import ProductPageSkeleton from '../skeletons/product-page-skeleton';
+import { RefreshCcw } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -53,12 +56,18 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
         requestUrl:`/product/prodct-details/${slug}`,
         queryParams:slug
      })
+  
   const queryClient = useQueryClient()
 
     const productDetail = useMemo(
       () => (data as ProductDetail) ,
       [data]
   );
+
+  const router = useRouter()
+  async function refreshData() {
+    router.refresh()
+   }
 
   // track views
     useEffect (() => {
@@ -74,18 +83,22 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
 
 
     if (isLoading) {
-        return <LoadingSpinners/>;
+       return <ProductPageSkeleton/>
   }
   
   if (isError) {
-    return <div>Error fetching data</div>;
+    return <div className='flex items-center justify-center'>
+      <p className='text-2xl text-slate-700'> Error fetching data</p>
+      <span onClick={refreshData}><RefreshCcw/></span>
+    
+    </div>;
   }
   
 
  
 
   return (
-    <div className="relative mt-16 min-h-screen bg-gray-50 p-4 sm:p-8 font-inter">
+    <div className="relative mt-16 min-h-screen  p-4 sm:p-8 font-inter">
     
 
       <div className="max-w-7xl mx-auto">
@@ -121,7 +134,7 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
       </div>
 
       {/* ai enquiry */}
-      <div className='fixed bottom-10 right-10 z-50'>
+      <div className='  '>
         <AiEnquiry product={productDetail}/>
 
       </div>

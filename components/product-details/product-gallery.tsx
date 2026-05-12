@@ -66,7 +66,7 @@ export default function ProductGallery({ images,online, username }: ProductGalle
               width={1200}
               height={800}
               alt={`Product image ${currentImageIndex + 1}`}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
               placeholder="blur"
               blurDataURL="/lazy-loader.png"
               priority={currentImageIndex === 0}

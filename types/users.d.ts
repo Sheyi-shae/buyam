@@ -191,7 +191,10 @@ export interface ProductDetail {
   condition: string
   seller: User
   likes: ProductLike[]
-  views:number
+  views: number
+  phone?: number | string
+  storeName?: string
+  lastSeen?: Date
   
 
   subCategoryId:number
