@@ -11,14 +11,28 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import ProductContactSeller from './product-contact-seller';
+import ShareMenu from './share-menu';
 
 
-  const DetailItem = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) => (
-    <div className="flex items-center border-b border-gray-100 pb-2">
-      <span className="w-6 mr-3">{icon}</span>
-      <span className="text-sm text-gray-500 w-24">{label}:</span>
-      <span className="font-medium text-sm text-gray-800 flex-1">{value}</span>
+
+interface DetailItemProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}
+
+const DetailItem: React.FC<DetailItemProps> = ({ icon, label, value }) => (
+  <div className="group flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-150 hover:bg-slate-50">
+    <div className="flex-shrink-0 text-emerald-600 transition-transform duration-200 group-hover:scale-110">
+      {icon}
     </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+        {label}
+      </p>
+      <p className="text-sm font-medium text-slate-900 truncate">{value}</p>
+    </div>
+  </div>
 );
   
 export default function ProductInfoPanel({ productData }: { productData: ProductDetail }) {
@@ -26,6 +40,7 @@ export default function ProductInfoPanel({ productData }: { productData: Product
   const queryClient = useQueryClient()
   const [showNumber, setShowNumber] = useState<boolean>(false);
   const [contactSeller, setContactSeller] = useState<boolean>(false);
+    const [isLiking, setIsLiking] = useState(false);
 
   // handle contact seller
   const handleContactSeller = () => {
@@ -35,6 +50,7 @@ export default function ProductInfoPanel({ productData }: { productData: Product
   // handle likes 
   const toggleLike = async (id: number) => {
     try {
+      setIsLiking(true)
       const isLiked = productData.likes.some(like => like.userId === Number(user?.id));
       const { data } = await apiPrivate.post(`/like/${id}`);
       toast.success(data.message);
@@ -48,14 +64,26 @@ export default function ProductInfoPanel({ productData }: { productData: Product
       queryClient.invalidateQueries({ queryKey: ["product-details",productData.slug] });
     } catch (error) {
       parseErrorMessage(error);
+    } finally {
+      setIsLiking(false)
     }
   };
 
   const isLiked = productData.likes.some(like => like.userId === user?.id);
+   const isOwnProduct = productData.sellerId === user?.id;
+
+
+   const shareConfig = {
+    title: productData.name,
+    description: `Check out this amazing product: ${productData.name}. Price: ${formatCurrency(productData.price)}. Location: ${productData.city}, ${productData.state}`,
+    url: typeof window !== "undefined" ? window.location.href : "",
+    price: formatCurrency(productData.price),
+  };
+
     
   return (
-   <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-100">
-      <div className="flex justify-between items-start mb-4">
+   <div className="p-2 md:p-6 rounded-xl shadow-lg border  bg-gradient-to-br from-emerald-50 via-white to-amber-50">
+      <div className="  flex justify-between items-start mb-4">
         <h1 className="text-2xl md:text-3xl capitalize font-bold text-gray-800 leading-tight">
           {productData.name}
               </h1>
@@ -64,31 +92,59 @@ export default function ProductInfoPanel({ productData }: { productData: Product
       </div>
 
       {/* views and price */}
-      <div className=' flex justify-between'>
+      <div className='  flex justify-between'>
       <p className="text-2xl md:text-3xl  text-amber-600 mb-6">
         {formatCurrency(productData.price)}
         </p>
         
-        {/* views and likes */}
-        <span className='flex gap-7 text-slate-700 text-sm'>
-           {user && ( <button
-           
-            onClick={() => toggleLike(productData.id)}
-            className="flex gap-2 hover:bg-white "
-          >
-            
-            <ThumbsUp size={18} className={`w-5 h-5 ${ isLiked ? "fill-amber-600 text-amber-600" : "text-foreground"}`} />
-          {productData.likes.length > 0 && (<span className="text-xs flex ">{productData.likes.length}</span>)}
-          </button>)}
-          <button className='flex gap-2'>
-          <Eye size={18} />{productData.views}
-        </button>
-        </span>
+        {/* Engagement Metrics */}
+              <div className="flex items-center gap-4 text-sm">
+                {/* Like Button */}
+                <button
+                  onClick={() => toggleLike(productData.id)}
+                  disabled={isLiking}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150 hover:bg-slate-100 active:scale-95 disabled:opacity-50"
+                  title="Like this product"
+                >
+                  <ThumbsUp
+                    size={18}
+                    className={`transition-all duration-200 ${
+                      isLiked
+                        ? "fill-amber-600 text-amber-600"
+                        : "text-slate-600 hover:text-amber-600"
+                    }`}
+                  />
+                  {productData.likes.length > 0 && (
+                    <span className="text-xs font-semibold text-slate-700">
+                      {productData.likes.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Views */}
+                <div className="flex items-center gap-2 text-slate-600">
+                  <Eye size={18} className="text-slate-500" />
+                  <span className="text-xs font-semibold">
+                    {productData.views.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Share Menu */}
+                <div className="ml-auto">
+                  <ShareMenu
+                    config={shareConfig}
+                    productId={productData.id}
+                  />
+                </div>
+              </div>
       
       </div>
 
+
+       
+
       {/* Action Buttons (Emerald) */}
-       {productData.sellerId !== user?.id &&
+       {!isOwnProduct &&
       <div className="flex flex-col md:flex-row gap-3 mb-6 text-sm md:text-base">
         <button
           onClick={handleContactSeller}
@@ -120,14 +176,49 @@ export default function ProductInfoPanel({ productData }: { productData: Product
           sellerId={productData.seller.id} />
 </div>
 
-      {/* Basic Details */}
-      <div className="space-y-3 text-gray-700">
-        <DetailItem icon={<MapPin size={18} className="text-emerald-500 " />} label="Location" value={productData.state} />
-         <DetailItem icon={<Locate size={18} className="text-emerald-500" />} label="City/Town" value={productData.city} />
-        <DetailItem icon={<Star size={18} className="text-emerald-500" />} label="Condition" value={productData.condition} />
-        <DetailItem icon={<ChevronRight size={18} className="text-emerald-500" />} label="Category" value={productData.subCategory.name} />
-        <DetailItem icon={<Share2 size={18} className="text-emerald-500" />} label="Posted" value={timeAgo(productData.createdAt)} />
+     {/* Details Section */}
+        <div className=" py-6 space-y-2">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 mb-4">
+            Product Details
+          </p>
+
+          <DetailItem
+            icon={<MapPin size={18} />}
+            label="Location"
+            value={productData.state}
+          />
+
+          <DetailItem
+            icon={<Locate size={18} />}
+            label="City/Town"
+            value={productData.city}
+          />
+
+          <DetailItem
+            icon={<Star size={18} />}
+            label="Condition"
+            value={productData.condition}
+          />
+
+          <DetailItem
+            icon={<ChevronRight size={18} />}
+            label="Category"
+            value={productData.subCategory.name}
+          />
+
+          <DetailItem
+            icon={<Share2 size={18} />}
+            label="Posted"
+            value={timeAgo(productData.createdAt)}
+          />
       </div>
+      
+       {/* Footer Section */}
+        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100">
+          <p className="text-xs text-slate-500">
+            Seller: <span className="font-semibold text-slate-700">{productData.seller.name}</span>
+          </p>
+        </div>
     </div>
   )
 }

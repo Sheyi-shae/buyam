@@ -19,20 +19,21 @@ export default function ConversationHeader({
         )}
 
         {isError && (
-          <>
-            <X />
-            <p>Error connecting</p>
-          </>
+          
+          <div className="p-1 h-12 text-slate-800 flex gap-2">
+            <span className="animate-spin"><Loader2 /></span>
+            <span>Reconnecting...</span>
+          </div>
         )}
       </div>
 
-      <div className="p-3 border-b mt-1 border-border">
+      <div className=" p-1 border-b mt-1 border-border">
         {!isLoading && !isError && (
-           <div className=" w-12 h-10 lg:w-16 lg:h-16 relative">
+           <div className=" w-10 h-10 lg:w-12 lg:h-12 relative">
                         <Image
                           src={'/logo/buyam.png'}
                           fill
-                          className="w-12 h-10 lg:w-16 lg:h-16 absolute"
+                          className="w-10 h-10 lg:w-12 lg:h-12 absolute"
                           alt="logo"
                         />
                       </div>

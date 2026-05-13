@@ -280,7 +280,7 @@ export interface Conversation {
 }
 
 export interface Message {
-  id?:number |string
+  id:number |string
   conversationId?:number
   senderId?:number
   content:string

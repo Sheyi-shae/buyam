@@ -50,7 +50,7 @@ export default function ProductGallery({ images,online, username }: ProductGalle
     return () => window.removeEventListener('keydown', handler);
   }, [currentImageIndex]);
 
-  const watermarkText = `@${username}`;
+  const watermarkText = `BuyAm-@${username}`;
 
   return (
     <>
@@ -83,7 +83,7 @@ export default function ProductGallery({ images,online, username }: ProductGalle
               {Array.from({ length: 1 }).map((_, row) => (
                 <div className="watermark-row" key={row}>
                   {Array.from({ length: 1 }).map((_, col) => (
-                    <span className="watermark-text" key={col}>{watermarkText}</span>
+                    <span className="watermark-text line-clamp-1" key={col}>{watermarkText}</span>
                   ))}
                 </div>
               ))}

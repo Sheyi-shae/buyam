@@ -41,24 +41,23 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
     newSocket.on("connect", () => {
       console.log("Socket connected:", newSocket.id);
-      // Server gets userId from JWT in cookies, no need to pass it
       newSocket.emit("join");
       setIsConnected(true);
     });
 
     // FIX: re-join on every reconnect so activeUsers stays in sync after a blip
     newSocket.on("reconnect", () => {
-      console.log("Socket reconnected, re-joining...");
+     // console.log("Socket reconnected, re-joining...");
       newSocket.emit("join");
     });
 
     newSocket.on("disconnect", (reason) => {
-      console.log("Socket disconnected:", reason);
+     console.log("Socket disconnected:", reason);
       setIsConnected(false);
     });
 
     newSocket.on("connect_error", (err) => {
-      console.error("Socket connect_error:", err.message);
+      //console.error("Socket connect_error:", err.message);
     });
 
     return () => {

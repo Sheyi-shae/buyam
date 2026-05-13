@@ -15,40 +15,13 @@ import AiEnquiry from './ai-enquiry';
 import ProductPageSkeleton from '../skeletons/product-page-skeleton';
 import { RefreshCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import SimilarProducts from './similar-product';
 
 
 
-const similarProducts = [
-  { id: 1, title: 'Art Deco Velvet Armchair', price: 650, img: 'https://placehold.co/400x300/10B981/FFFFFF?text=Similar+1' },
-  { id: 2, title: 'Mahogany Dining Table Set', price: 1200, img: 'https://placehold.co/400x300/F59E0B/333333?text=Similar+2' },
-  { id: 3, title: 'Modern Floor Lamp', price: 150, img: 'https://placehold.co/400x300/00A36C/FFFFFF?text=Similar+3' },
-  { id: 4, title: 'Industrial Bookshelf', price: 400, img: 'https://placehold.co/400x300/FFBF00/333333?text=Similar+4' },
-];
 
 
-  const ProductsYouMayAlsoLike = () => (
-    <div className="mt-8 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">
-        Products You May Also Like
-      </h2>
-      <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
-        {similarProducts.map(product => (
-          <div key={product.id} className="min-w-[200px] max-w-[200px] border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <img
-              src={product.img}
-              alt={product.title}
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h3 className="font-semibold text-gray-800 text-sm truncate">{product.title}</h3>
-              <p className="text-xl font-bold text-amber-600 mt-1">${product.price}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
+ 
 const ProductDetailsPage = ({slug}:{slug:string}) => {
     // fetch product details based slug
      const { data, isLoading,isError} = useFetchPublicData({
@@ -86,13 +59,38 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
        return <ProductPageSkeleton/>
   }
   
-  if (isError) {
-    return <div className='flex items-center justify-center'>
-      <p className='text-2xl text-slate-700'> Error fetching data</p>
-      <span onClick={refreshData}><RefreshCcw/></span>
-    
-    </div>;
-  }
+if (isError) {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 p-6">
+      <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-xl backdrop-blur">
+        
+        <div className="flex flex-col items-center text-center">
+          
+          <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
+            <RefreshCcw className="h-10 w-10 text-red-500" />
+          </div>
+
+          <h2 className="text-2xl font-bold tracking-tight text-slate-800">
+            Something went wrong
+          </h2>
+
+          <p className="mt-3 text-sm leading-relaxed text-slate-500">
+            We couldn&apos;t fetch the data at the moment. 
+            Please try refreshing the page.
+          </p>
+
+          <button
+            onClick={refreshData}
+            className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:bg-slate-800 active:scale-[0.98]"
+          >
+            <RefreshCcw className="h-4 w-4" />
+            Retry
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
   
 
  
@@ -130,7 +128,7 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
         </div>
 
         {/* Bottom Section (Recommendations) */}
-        <ProductsYouMayAlsoLike />
+        <SimilarProducts/>
       </div>
 
       {/* ai enquiry */}

@@ -93,22 +93,51 @@ const prevSlide = () => {
         
           </div>  
           {isLoading ? (
-          
-             <div className="grid grid-cols-3 place-items-center mx-auto line-clamp-1 md:grid-cols-4 lg:grid-cols-4 gap-2">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} >
-                  
-                  <div className="cat-icon-wrap">
-                    <Skeleton className="h-[26px] w-[26px] rounded-full" />
-                  </div>
+  <div className="relative w-full">
+    
+    {/* Edge fades */}
+    <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-white to-transparent" />
+    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-white to-transparent" />
 
-                  <Skeleton className="h-3 w-3/4 mt-2" />
+    {/* Skeleton slider */}
+    <div className="overflow-hidden w-full">
+      <div className="flex gap-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="min-w-[150px] rounded-2xl border border-slate-200 bg-white p-3 shadow-sm"
+          >
+            
+            {/* Image */}
+            <Skeleton className="h-[80px] w-full rounded-xl" />
 
-                  <Skeleton className="h-3 w-10 mt-2 rounded-full" />
-                  
-        </div>
+            {/* Content */}
+            <div className="pt-3 flex flex-col items-center">
+              
+              {/* Title */}
+              <Skeleton className="h-4 w-20" />
+
+              {/* Badge */}
+              <Skeleton className="mt-3 h-5 w-16 rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Indicators */}
+    <div className="mt-6 flex items-center justify-center gap-2">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Skeleton
+          key={i}
+          className={`h-2 rounded-full ${
+            i === 0 ? "w-8" : "w-2"
+          }`}
+        />
       ))}
     </div>
+  </div>
+
           ): (
             
    <div
