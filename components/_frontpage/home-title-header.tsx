@@ -20,7 +20,7 @@ export default function HomeTitleHeader({ title, desc }: HomeTitleHeaderProps) {
           {title && (<p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-600">
             {title}
           </p>)}
-      <h2 className="cat-heading text-xs md:text-base  font-light text-slate-800">
+      <h2 className="cat-heading text-xs md:text-base  font-light text-slate-700">
         {desc}
       </h2>
     </div>

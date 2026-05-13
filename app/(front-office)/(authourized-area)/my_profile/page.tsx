@@ -1,5 +1,5 @@
 "use client"
-import LoadingSpinners from '@/components/loading-spinners'
+import LoadingSpinners, { EmptyStateLoader } from '@/components/loading-spinners'
 import ProfileTab from '@/components/profile/profile-tab'
 import PublicVendorHeader from '@/components/public-vendor/public-vendor-header'
 import { useAuthStore } from '@/stores/auth-stores'
@@ -24,7 +24,10 @@ export default function PrifilePage() {
      
      
    
-      if(isLoading) return <LoadingSpinners text="Fetching  profile..."/>
+  if (isLoading)
+    return <EmptyStateLoader
+      title='Fetching Profile'
+      />
    
    
     

@@ -2,6 +2,13 @@
 
 import { ArrowRight, Loader2, } from 'lucide-react';
 import { useState } from 'react';
+import { AlertTriangleIcon } from "lucide-react"
+import {
+  Alert,
+   
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
 
 export default function AuthFormCard({ redirectTo, msg }: { redirectTo:string , msg:string }) {
    
@@ -33,10 +40,16 @@ export default function AuthFormCard({ redirectTo, msg }: { redirectTo:string , 
             <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10 border border-gray-100">
               <div className="text-center mb-8">
             {msg ? (
-             <div className="flex-1 bg-red-50 p-2">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Please sign in to access this page</p>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">You need to be signed in to continue. Signing in will return you here.</p>
-
+              
+             <div className="flex-1  p-2">
+                    <Alert className="w-full border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+      <AlertTriangleIcon />
+      <AlertTitle>Please sign in to access this page</AlertTitle>
+      <AlertDescription className='flex flex-row'>
+                  You need to be signed in to continue. Signing in will return you here.
+      </AlertDescription>
+      
+    </Alert>
                     </div>
             ): (
                 <>

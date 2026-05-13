@@ -6,7 +6,7 @@ export interface User {
   email: string;
   role?: string
   online?: boolean
-  lastSeen?: Date
+  lastSeen: Date
   avatar?: string;
   phone?: number | string
   storeName?: string
@@ -69,7 +69,8 @@ export interface Product {
   isPremium:boolean 
   negotiable:  boolean 
   isSold: boolean 
-  sellerPublicId:string
+  sellerPublicId: string
+  views: number
   slug: string    
   sellerId: number | undefined
   state?: string
@@ -194,7 +195,6 @@ export interface ProductDetail {
   views: number
   phone?: number | string
   storeName?: string
-  lastSeen?: Date
   
 
   subCategoryId:number
@@ -252,6 +252,7 @@ export interface VendorProfileProps  {
   name: string;
   email: string;
   avatar: string;
+  lastSeen:Date
   products?: Product[]
   storeName?:string
   storeDescription?: string

@@ -33,7 +33,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
     condition: "Used",
     phone: "08012345678",
     storeName: "Tech Haven",
-    lastSeen: new Date(),
+   
     views: 432,
     likes: [{ id: 1 }, { id: 2 }, { id: 3 }] as ProductLike[],
     seller: {
@@ -41,6 +41,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
       name: "David Johnson",
       avatar:
         "https://randomuser.me/api/portraits/men/32.jpg",
+       lastSeen: new Date(),
     } as User,
     subCategoryId: 2,
     categoryId: 1,
@@ -76,7 +77,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
     condition: "New",
     phone: "08198765432",
     storeName: "Urban Furniture",
-    lastSeen: new Date(),
+    
     views: 189,
     likes: [{ id: 1 }] as ProductLike[],
     seller: {
@@ -84,6 +85,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
       name: "Sarah Williams",
       avatar:
         "https://randomuser.me/api/portraits/women/44.jpg",
+      lastSeen: new Date(),
     } as User,
     subCategoryId: 8,
     categoryId: 4,
@@ -119,7 +121,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
     condition: "Used",
     phone: "09022223333",
     storeName: "Elite Autos",
-    lastSeen: new Date(),
+   
     views: 920,
     likes: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] as ProductLike[],
     seller: {
@@ -127,6 +129,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
       name: "Michael Ade",
       avatar:
         "https://randomuser.me/api/portraits/men/61.jpg",
+       lastSeen: new Date(),
     } as User,
     subCategoryId: 15,
     categoryId: 5,
@@ -162,7 +165,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
     condition: "Used",
     phone: "07011112222",
     storeName: "Game Plug",
-    lastSeen: new Date(),
+    
     views: 350,
     likes: [{ id: 1 }, { id: 2 }] as ProductLike[],
     seller: {
@@ -170,6 +173,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
       name: "Daniel Smith",
       avatar:
         "https://randomuser.me/api/portraits/men/52.jpg",
+      lastSeen: new Date(),
     } as User,
     subCategoryId: 5,
     categoryId: 1,
@@ -190,7 +194,7 @@ const DEMO_PRODUCT: ProductDetail[] = [
 
 export default function SimilarProducts() {
  
-  
+   
 
  
 

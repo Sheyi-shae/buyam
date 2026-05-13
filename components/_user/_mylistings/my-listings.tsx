@@ -102,15 +102,6 @@ export default function MyListings() {
   }, [listings, selectedStatus, sortOption, searchQuery]);
   //console.log("Filtered listings:", filteredListings);
 
-  const handleEdit = (listing: Listing) => {
-    console.log('Edit listing:', listing);
-  };
-
- 
-
-  const handleViewDetails = (listing: Listing) => {
-    console.log('View details:', listing);
-  };
 
     if (isLoading) {
       return <EmptyStateLoader

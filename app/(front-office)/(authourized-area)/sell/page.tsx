@@ -4,29 +4,27 @@ import { useAuthStore } from '@/stores/auth-stores'
 import { AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
+import { AlertTriangleIcon } from "lucide-react"
+import {
+  Alert,
+   
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { Button } from '@/components/ui/button'
 
 export function WarningMsg() {
   return (
-    <div className="w-full max-w-2xl  mx-auto px-4 py-6">
-      <div className="flex items-start gap-4 p-6 bg-card rounded-lg border border-border hover:border-primary/30 transition-colors shadow-sm">
-        {/* Alert Icon */}
-        <div className="flex-shrink-0 mt-0.5">
-          <AlertCircle className="h-5 w-5 text-destructive" />
-        </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-foreground mb-1">
-            Update your mobile number
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Please visit the <Link href="/my_profile" className="text-primary mr-2 hover:underline">
-              profile section
-            </Link>
-             to add your mobile number . This helps buyers contact you and builds trust in your seller profile.
-          </p>
-        </div>
-      </div>
+    <div className="w-full max-w-3xl  mx-auto px-4 py-6">
+      <Alert className="w-full border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+      <AlertTriangleIcon />
+      <AlertTitle>Update your mobile number</AlertTitle>
+      <AlertDescription className='flex flex-row'>
+         Please visit the profile section to add your mobile number . This helps buyers contact you and builds trust in your seller profile.
+        </AlertDescription>
+      
+    </Alert>
     </div>
   )
 }

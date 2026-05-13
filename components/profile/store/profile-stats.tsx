@@ -54,7 +54,7 @@ export default function ProfileStats({user,vendorProducts}:ProfileStatsProps) {
                     <Eye className="w-5 h-5 text-primary " />
                   </div>
                   <div className="text-2xl font-serif">{TotalProductViews || 0}</div>
-                  <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Views</div>
+                  <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Item Views</div>
                               </div>
                               
               </div>

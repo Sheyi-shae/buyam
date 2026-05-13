@@ -2,6 +2,11 @@
 import { Product } from '@/types/users';
 import CategoryProductCard from './category-product-card';
 import HomeTitleHeader from './home-title-header';
+import { ProductCardSlide } from '../animations/product-slider';
+import { ArrowRight, MapPin, ShoppingBag, TrendingUp } from 'lucide-react';
+import { formatCurrency } from '@/utils/format-currency';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 
 export default function HomeListings({ products }: { products: Product[] }) {
@@ -13,14 +18,19 @@ export default function HomeListings({ products }: { products: Product[] }) {
                 
                 {/* --- Header Section --- */}
          
-          <HomeTitleHeader title="Featured Listings" desc="Discover the latest and most popular items ." />
-                    
-                {/* --- End Header Section --- */}
+                <HomeTitleHeader
+                    title="Featured Listings"
+                    desc="Discover the latest and most popular items ." />
+                 
+         <div className="pcard-grid sm:grid-cols-2">
+                    <CategoryProductCard
+                        products={products} />
+           
+       </div>
+        </div>
+                
 
-                <div >
-                   <CategoryProductCard items={products} />
-                </div>
-            </div>
+            
         </section>
     )
 }
