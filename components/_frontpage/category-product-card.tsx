@@ -27,7 +27,7 @@ export default function CategoryProductCard({ products }: { products: Product[] 
 
         {/* Negotiable Badge */}
         {item.negotiable && (
-          <div className="absolute top-3 left-3 px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full flex items-center gap-1">
+          <div className="absolute top-3 left-3 px-3 py-1 bg-amber-500 text-white text-xs f rounded-full flex items-center gap-1">
             <TrendingUp size={12} />
             Negotiable
           </div>
@@ -62,7 +62,7 @@ export default function CategoryProductCard({ products }: { products: Product[] 
         </div>
 
         {/* Seller Info */}
-        <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+        <div className="pt-3 border-t border-b pb-3 border-slate-100 flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
             {item.seller.name.charAt(0).toUpperCase()}
           </div>
@@ -83,7 +83,7 @@ export default function CategoryProductCard({ products }: { products: Product[] 
             <span className="circle" aria-hidden="true">
             <span className="icon arrow"></span>
             </span>
-            <span className="button-text absolute text-emerald-800 font-medium">View Details</span>
+            <span className="button-text absolute text-emerald-800 ">View Details</span>
          </button>  
         </Link>
           </div>

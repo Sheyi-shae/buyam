@@ -1,6 +1,6 @@
 "use client"
 
-import LoadingSpinners from "@/components/loading-spinners"
+import LoadingSpinners, { EmptyStateLoader } from "@/components/loading-spinners"
 import PublicVendorHeader from "@/components/public-vendor/public-vendor-header"
 import VendorPublicProfileTabs from "@/components/public-vendor/ven-public-tab"
 import { VendorProfileProps } from "@/types/users"
@@ -24,7 +24,7 @@ const [activeTab, setActiveTab] = useState("store")
   
   
 
-   if(isLoading) return <LoadingSpinners text="Fetching vendor profile..."/>
+   if(isLoading) return <EmptyStateLoader title="Fetching vendor profile"/>
 
 
   return (

@@ -1,382 +1,123 @@
+"use client";
+
+import { Product } from "@/types/users";
+import { useFetchPublicData } from "@/utils/fetch-hooks";
 import {
   ArrowRight,
-  Heart,
-  MapPin,
-  ShoppingBag,
+  Flame,
+  Loader2,
   Sparkles,
-  TrendingUp,
 } from "lucide-react";
-import React, { useState } from "react";
-import { toast } from "sonner";
-import { CategoryD, ProductDetail, ProductLike, SubCategory, User } from "@/types/users";
-import { formatCurrency } from "@/utils/format-currency";
+import { useMemo } from "react";
+import CategoryProductCard from "../_frontpage/category-product-card";
 
+interface SimilarProductsProps {
+  productId: number;
+}
 
-const DEMO_PRODUCT: ProductDetail[] = [
-  {
-    id: 1,
-    name: "iPhone 15 Pro Max 256GB - Clean Condition",
-    price: 1850000,
-    avatar: [
-      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=1200&auto=format&fit=crop",
-    ],
-    description:
-      "Barely used iPhone 15 Pro Max with battery health at 98%. Comes with receipt and original accessories.",
-    isPremium: true,
-    negotiable: true,
-    isSold: false,
-    sellerPublicId: "SELL-IPH-001",
-    slug: "iphone-15-pro-max-256gb",
-    sellerId: 12,
-    state: "Lagos",
-    city: "Lekki",
-    condition: "Used",
-    phone: "08012345678",
-    storeName: "Tech Haven",
-   
-    views: 432,
-    likes: [{ id: 1 }, { id: 2 }, { id: 3 }] as ProductLike[],
-    seller: {
-      id: 12,
-      name: "David Johnson",
-      avatar:
-        "https://randomuser.me/api/portraits/men/32.jpg",
-       lastSeen: new Date(),
-    } as User,
-    subCategoryId: 2,
-    categoryId: 1,
-    subCategory: {
-      id: 2,
-      name: "Mobile Phones",
-    } as SubCategory,
-    category: {
-      id: 1,
-      name: "Electronics",
-    } as CategoryD,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
+export default function SimilarProducts({
+  productId,
+}: SimilarProductsProps) {
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useFetchPublicData({
+    queryKey: "similar-products",
+    requestUrl: `/product/similar-product/${productId}`,
+  });
 
-  {
-    id: 2,
-    name: "Modern L-Shaped Workstation Desk",
-    price: 320000,
-    avatar: [
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
-    ],
-    description:
-      "Spacious office desk perfect for remote work setups and gaming stations.",
-    isPremium: false,
-    negotiable: true,
-    isSold: false,
-    sellerPublicId: "SELL-FUR-002",
-    slug: "modern-l-shaped-workstation-desk",
-    sellerId: 18,
-    state: "Abuja",
-    city: "Wuse",
-    condition: "New",
-    phone: "08198765432",
-    storeName: "Urban Furniture",
-    
-    views: 189,
-    likes: [{ id: 1 }] as ProductLike[],
-    seller: {
-      id: 18,
-      name: "Sarah Williams",
-      avatar:
-        "https://randomuser.me/api/portraits/women/44.jpg",
-      lastSeen: new Date(),
-    } as User,
-    subCategoryId: 8,
-    categoryId: 4,
-    subCategory: {
-      id: 8,
-      name: "Furniture",
-    } as SubCategory,
-    category: {
-      id: 4,
-      name: "Home & Office",
-    } as CategoryD,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
+  const similarProducts = useMemo(
+    () => (data as Product[]) || [],
+    [data]
+  );
 
-  {
-    id: 3,
-    name: "2020 Toyota Camry Sport Edition",
-    price: 14500000,
-    avatar: [
-      "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1200&auto=format&fit=crop",
-    ],
-    description:
-      "Well maintained Toyota Camry Sport Edition with full customs papers and zero accident history.",
-    isPremium: true,
-    negotiable: false,
-    isSold: false,
-    sellerPublicId: "SELL-CAR-003",
-    slug: "2020-toyota-camry-sport",
-    sellerId: 21,
-    state: "Rivers",
-    city: "Port Harcourt",
-    condition: "Used",
-    phone: "09022223333",
-    storeName: "Elite Autos",
-   
-    views: 920,
-    likes: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] as ProductLike[],
-    seller: {
-      id: 21,
-      name: "Michael Ade",
-      avatar:
-        "https://randomuser.me/api/portraits/men/61.jpg",
-       lastSeen: new Date(),
-    } as User,
-    subCategoryId: 15,
-    categoryId: 5,
-    subCategory: {
-      id: 15,
-      name: "Cars",
-    } as SubCategory,
-    category: {
-      id: 5,
-      name: "Vehicles",
-    } as CategoryD,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
+  if (isError) {
+    return (
+      <div className="rounded-sm py-7 border border-red-100 bg-red-50/70 p-8 text-center">
+        <p className="text-sm font-medium text-red-600">
+          Failed to load similar products
+        </p>
+      </div>
+    );
+  }
 
-  {
-    id: 4,
-    name: "PlayStation 5 Digital Edition",
-    price: 780000,
-    avatar: [
-      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=1200&auto=format&fit=crop",
-    ],
-    description:
-      "PS5 Digital Edition in excellent condition with one controller included.",
-    isPremium: false,
-    negotiable: true,
-    isSold: false,
-    sellerPublicId: "SELL-GAME-004",
-    slug: "playstation-5-digital-edition",
-    sellerId: 9,
-    state: "Oyo",
-    city: "Ibadan",
-    condition: "Used",
-    phone: "07011112222",
-    storeName: "Game Plug",
-    
-    views: 350,
-    likes: [{ id: 1 }, { id: 2 }] as ProductLike[],
-    seller: {
-      id: 9,
-      name: "Daniel Smith",
-      avatar:
-        "https://randomuser.me/api/portraits/men/52.jpg",
-      lastSeen: new Date(),
-    } as User,
-    subCategoryId: 5,
-    categoryId: 1,
-    subCategory: {
-      id: 5,
-      name: "Gaming",
-    } as SubCategory,
-    category: {
-      id: 1,
-      name: "Electronics",
-    } as CategoryD,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
-
-
-export default function SimilarProducts() {
- 
-   
-
- 
+  if (!isLoading && similarProducts.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="w-full max-w-7xl mx-auto">
-      {/* Section Header */}
-      <div className="mb-8 mt-2">
-        <div className="flex items-center gap-3 mb-2">
-          
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
-            Similar Item
-          </h2>
-        </div>
-        
+    <section className="relative overflow-hidden rounded-sm  border border-border/50 bg-gradient-to-b from-white via-white to-emerald-50/30 px-4 py-8 mt-7 sm:px-6 lg:px-8">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-24 top-0 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+
+        <div className="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
+
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f8fafc_1px,transparent_1px),linear-gradient(to_bottom,#f8fafc_1px,transparent_1px)] bg-[size:42px_42px] opacity-40" />
       </div>
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {DEMO_PRODUCT.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
             
+
+            <h2 className="text-lg md:text-2xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+            Products You May Like
+            </h2>
+
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+              Explore related products based on browsing patterns,
+              interests, and marketplace trends.
+            </p>
+          </div>
+
+          
+        </div>
+
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="
+                  overflow-hidden rounded-3xl border border-border/50
+                  bg-white/80 p-4 shadow-sm backdrop-blur-sm
+                "
+              >
+                <div className="h-52 animate-pulse rounded-2xl bg-slate-100" />
+
+                <div className="mt-4 space-y-3">
+                  <div className="h-4 w-3/4 animate-pulse rounded bg-slate-100" />
+                  <div className="h-4 w-1/2 animate-pulse rounded bg-slate-100" />
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <div className="h-9 w-9 animate-pulse rounded-full bg-slate-100" />
+
+                    <div className="flex-1 space-y-2">
+                      <div className="h-3 w-24 animate-pulse rounded bg-slate-100" />
+                      <div className="h-3 w-16 animate-pulse rounded bg-slate-100" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <>
            
-          />
-        ))}
-      </div>
 
-      {/* Loading State */}
-      {/* {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="bg-slate-100 rounded-lg h-80 animate-pulse"
-            />
-          ))}
-        </div>
-      )} */}
-    </div>
-  );
-}
-
-/**
- * ProductCard Component
- * Individual product card with image, pricing, and seller info
- */
-interface ProductCardProps {
-  product: ProductDetail;
-  isLiked?: boolean;
-  
-}
-
-const ProductCard: React.FC<ProductCardProps> = ({
-  product,
-  isLiked,
- 
-}) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  return (
-    <div
-      
-      className="group bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-300 cursor-pointer"
-    >
-      {/* Image Container */}
-      <div className="relative h-48 bg-slate-100 overflow-hidden">
-        {/* Image */}
-        <img
-          src={product.seller.avatar || "https://via.placeholder.com/300x200"}
-          alt={product.name}
-          onLoad={() => setImageLoaded(true)}
-          className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 ${
-            imageLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
-        {/* Loading Placeholder */}
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-100 animate-pulse" />
-        )}
-
-        {/* Overlay Actions */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
-          {/* Like Button */}
-          <div className="flex justify-end">
-            <button
-              
-              className="p-2 bg-white rounded-full shadow-lg hover:bg-emerald-50 transition-all duration-150 active:scale-95"
-              title="Add to favorites"
-            >
-              <Heart
-                size={18}
-                className={`transition-all duration-200 ${
-                  isLiked
-                    ? "fill-red-500 text-red-500"
-                    : "text-slate-600 hover:text-red-500"
-                }`}
+            {/* Products Grid */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <CategoryProductCard
+                products={similarProducts}
               />
-            </button>
-          </div>
-
-          {/* View Details Button */}
-          <button className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-all duration-150 active:scale-95">
-            <ShoppingBag size={16} />
-            <span>View Details</span>
-            <ArrowRight size={16} />
-          </button>
-        </div>
-
-        {/* Condition Badge */}
-        <div className="absolute top-3 left-3 px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
-          {product.condition}
-        </div>
-
-        {/* Negotiable Badge */}
-        {product.negotiable && (
-          <div className="absolute top-3 right-3 px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full flex items-center gap-1">
-            <TrendingUp size={12} />
-            Negotiable
-          </div>
+            </div>
+          </>
         )}
       </div>
-
-      {/* Content Section */}
-      <div className="p-4 space-y-3">
-        {/* Product Name */}
-        <h3 className="font-semibold text-slate-900 line-clamp-2 group-hover:text-emerald-600 transition-colors duration-200">
-          {product.name}
-        </h3>
-
-        {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-amber-600">
-            {formatCurrency(product.price)}
-          </span>
-          {product.negotiable && (
-            <span className="text-xs text-slate-500 font-medium">
-              or best offer
-            </span>
-          )}
-        </div>
-
-        {/* Location */}
-        <div className="flex items-center gap-2 text-slate-600">
-          <MapPin size={14} className="text-emerald-600 flex-shrink-0" />
-          <span className="text-xs truncate">
-            {product.city}, {product.state}
-          </span>
-        </div>
-
-        {/* Seller Info */}
-        <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-            {product.seller.name.charAt(0).toUpperCase()}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-slate-900 truncate">
-              {product.seller.name}
-            </p>
-            <p className="text-xs text-slate-500">
-              {product.views} views • {product.likes.length} likes
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-2 pt-2">
-          <div className="px-2 py-1 bg-slate-50 rounded text-center">
-            <p className="text-xs font-semibold text-slate-900">
-              {product.likes.length}
-            </p>
-            <p className="text-xs text-slate-500">Likes</p>
-          </div>
-          <div className="px-2 py-1 bg-slate-50 rounded text-center">
-            <p className="text-xs font-semibold text-slate-900">
-              {product.views}
-            </p>
-            <p className="text-xs text-slate-500">Views</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
   );
-};
+}

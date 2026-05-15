@@ -7,9 +7,12 @@ import { ArrowRight, MapPin, ShoppingBag, TrendingUp } from 'lucide-react';
 import { formatCurrency } from '@/utils/format-currency';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { ProductCardSkeleton } from '../skeletons/product-card-sketeton';
 
 
-export default function HomeListings({ products }: { products: Product[] }) {
+export default function HomeListings({
+    products,
+    isLoading }: { products: Product[], isLoading:boolean}) {
     
 
     return (
@@ -22,11 +25,25 @@ export default function HomeListings({ products }: { products: Product[] }) {
                     title="Featured Listings"
                     desc="Discover the latest and most popular items ." />
                  
-         <div className="pcard-grid sm:grid-cols-2">
+                {isLoading ? (
+                <div className=" gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                    {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i}>
+            
+            <ProductCardSkeleton/>
+          </div>
+        ))}
+           
+       </div>
+                
+                ) : (
+                         <div className=" gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                     <CategoryProductCard
                         products={products} />
            
        </div>
+                )}
+        
         </div>
                 
 

@@ -111,7 +111,7 @@ export default function MessageChatArea({
  
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden z-10 p-4 space-y-4 max-h-[35vh] md:max-h-[50vh]">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden z-10 p-4 space-y-4 max-h-[43vh] md:max-h-[50vh]">
               {messages.map((message) => (
                 <div 
                   key={message.id} 

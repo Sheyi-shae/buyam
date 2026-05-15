@@ -89,14 +89,14 @@ export function ListingStatsDisplay({ stats, isLoading }: ListingStatsDisplayPro
                     {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
                   </p>
                 </div>
-                <div className={`${stat.color} p-3 rounded-lg`}>
+                <div className={` p-3 rounded-lg`}>
                   <Icon className={`w-5 h-5 ${stat.textColor}`} />
                 </div>
               </div>
               {stat.trend === 'up' && (
                 <div className="mt-3 flex items-center gap-1">
                   <TrendingUp className="w-3 h-3 text-emerald-600" />
-                  <p className="text-xs font-semibold text-emerald-600">Up this month</p>
+                  
                 </div>
               )}
             </CardContent>

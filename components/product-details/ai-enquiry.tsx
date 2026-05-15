@@ -68,7 +68,7 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
         <div className="bg-white text-xs  border border-amber-100 text-amber-800 md:text-sm py-2 px-4 rounded-2xl shadow-xl animate-bounce">
           <span className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
-            Ask about this item!
+            Ask Bella!
           </span>
         </div>
       )}

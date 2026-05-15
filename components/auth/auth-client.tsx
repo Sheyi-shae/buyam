@@ -1,7 +1,6 @@
 'use client';
 
 
-import { CheckCircle2 } from 'lucide-react';
 import AuthFormCard from './auth-form-card';
 
 export function AuthClient({ redirectTo, msg }: { redirectTo:string , msg:string }) {

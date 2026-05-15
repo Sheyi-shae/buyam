@@ -20,7 +20,7 @@ export function WarningMsg() {
       <Alert className="w-full border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
       <AlertTriangleIcon />
       <AlertTitle>Update your mobile number</AlertTitle>
-      <AlertDescription className='flex flex-row'>
+      <AlertDescription className='text-xs'>
          Please visit the profile section to add your mobile number . This helps buyers contact you and builds trust in your seller profile.
         </AlertDescription>
       

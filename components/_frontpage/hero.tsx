@@ -32,11 +32,11 @@ export default function Hero() {
 
   return (
     <div className="text-center">
-      <h1 className="text-3xl md:text-6xl font-bold mb-4  md:leading-tight">
-        <span className="tracking-in-expand   gradient-char">Discover Everything</span>
+      <h1 className=" font-bold mb-4  md:leading-tight">
+        <span className="tracking-in-expand text-4xl md:text-6xl  gradient-char">Discover Everything</span>
         <span
   ref={textRef}
-  className="block px-16 md:px-0 text-gray-900 cat-heading"
+  className="block px-16 md:px-0 text-3xl md:text-6xl text-gray-900 cat-heading"
 >
   From Trusted Vendors
 </span>

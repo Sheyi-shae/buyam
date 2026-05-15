@@ -40,36 +40,60 @@ export default function ProductInfoPanel({ productData }: { productData: Product
   const queryClient = useQueryClient()
   const [showNumber, setShowNumber] = useState<boolean>(false);
   const [contactSeller, setContactSeller] = useState<boolean>(false);
-    const [isLiking, setIsLiking] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const [optimisticLiked, setOptimisticLiked] = useState(
+  productData.likes.some(
+    (like) => like.userId === Number(user?.id)
+  )
+);
+
+const [optimisticLikesCount, setOptimisticLikesCount] = useState(
+  productData.likes.length
+);
 
   // handle contact seller
   const handleContactSeller = () => {
     setContactSeller(!contactSeller);
   };
   
-  // handle likes 
-  const toggleLike = async (id: number) => {
-    try {
-      setIsLiking(true)
-      const isLiked = productData.likes.some(like => like.userId === Number(user?.id));
-      const { data } = await apiPrivate.post(`/like/${id}`);
-      toast.success(data.message);
-      
-      // Only play sound
-      if (!isLiked) {
-      
-        playSound("/sound/like.wav");
-      }
+ const toggleLike = async (id: number) => {
+  if (!user || isLiking) return;
 
-      queryClient.invalidateQueries({ queryKey: ["product-details",productData.slug] });
-    } catch (error) {
-      parseErrorMessage(error);
-    } finally {
-      setIsLiking(false)
-    }
-  };
+  const previousLiked = optimisticLiked;
+  const previousCount = optimisticLikesCount;
 
-  const isLiked = productData.likes.some(like => like.userId === user?.id);
+  // UI update
+  setOptimisticLiked(!previousLiked);
+
+  setOptimisticLikesCount((prev) =>
+    previousLiked ? prev - 1 : prev + 1
+  );
+
+  // play sound instantly
+  if (!previousLiked) {
+    playSound("/sound/like.mp3");
+  }
+
+  try {
+    setIsLiking(true);
+
+    await apiPrivate.post(`/like/${id}`);
+    
+    queryClient.invalidateQueries({
+      queryKey: ["product-details", productData.slug],
+    });
+
+  } catch (error) {
+    setOptimisticLiked(previousLiked);
+    setOptimisticLikesCount(previousCount);
+
+    parseErrorMessage(error);
+  } finally {
+    setIsLiking(false);
+  }
+};
+
+  
    const isOwnProduct = productData.sellerId === user?.id;
 
 
@@ -102,19 +126,19 @@ export default function ProductInfoPanel({ productData }: { productData: Product
                 {/* Like Button */}
                 <button
                   onClick={() => toggleLike(productData.id)}
-                  disabled={isLiking}
+                  //disabled={isLiking}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150 hover:bg-slate-100 active:scale-95 disabled:opacity-50"
                   title="Like this product"
                 >
                   <ThumbsUp
                     size={18}
                     className={`transition-all duration-200 ${
-                      isLiked
+                      optimisticLiked
                         ? "fill-amber-600 text-amber-600"
                         : "text-slate-600 hover:text-amber-600"
                     }`}
                   />
-                  {productData.likes.length > 0 && (
+                  {optimisticLikesCount > 0 && (
                     <span className="text-xs font-semibold text-slate-700">
                       {productData.likes.length}
                     </span>

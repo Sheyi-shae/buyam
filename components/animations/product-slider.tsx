@@ -60,10 +60,26 @@ export function ProductCardSlide({
   mode,
   queryParams
 }: Props) {
+  
+  const { user } = useAuthStore()
+  const queryClient = useQueryClient()
+  
   const avatars = item.avatar ?? [];
   const count = avatars.length;
   const [index, setIndex] = useState(0);
   const hovered = useRef(false);
+   const [optimisticLiked, setOptimisticLiked] = useState(
+    item.likes.some(
+      (like) => like.userId === Number(user?.id)
+    )
+  );
+  
+  const [optimisticLikesCount, setOptimisticLikesCount] = useState(
+    item.likes.length
+  );
+  
+
+
   const [bubbles, setBubbles] = useState<
     { id: number; x: number; y: number; color: string }[]
   >([]);
@@ -117,35 +133,48 @@ export function ProductCardSlide({
     setBubbles(prev => [...prev, ...newBubbles]);
   };
     
-  // like functionality
-  const { user } = useAuthStore()
-  const queryClient = useQueryClient()
   
   // handle likes 
   const toggleLike = async (id: number) => {
+         if (!user ) return;
+
+  const previousLiked = optimisticLiked;
+  const previousCount = optimisticLikesCount;
+
+  // UI update
+  setOptimisticLiked(!previousLiked);
+
+  setOptimisticLikesCount((prev) =>
+    previousLiked ? prev - 1 : prev + 1
+      );
+      // play sound instantly
+    if (!previousLiked) {
+      triggerBubbles();
+    playSound("/sound/like.mp3");
+  }
     try {
-      const isLiked = item.likes.some(like => like.userId === Number(user?.id));
+
+  
+     
       const { data } = await apiPrivate.post(`/like/${id}`);
       toast.success(data.message);
       
-      // Only trigger bubbles if the item was just liked (not unliked)
-      if (!isLiked) {
-        triggerBubbles();
-        playSound("/sound/like.wav");
-      }
-
+     
       queryClient.invalidateQueries({ queryKey: [queryFn, queryParams] });
-      console.log(queryFn,queryParams)
+      
     } catch (error) {
+      setOptimisticLiked(previousLiked);
+          setOptimisticLikesCount(previousCount);
+      
+          parseErrorMessage(error);
       parseErrorMessage(error);
     }
   };
 
-  const isLiked = item.likes.some(like => like.userId === Number(user?.id));
-
+  
   return (
     <div
-      className="relative h-60 w-full overflow-hidden bg-muted select-none"
+      className="relative h-60 w-full overflow-hidden bg-white  select-none"
       onMouseEnter={() => (hovered.current = true)}
       onMouseLeave={() => (hovered.current = false)}
     >
@@ -190,7 +219,7 @@ export function ProductCardSlide({
             className="bg-white/90 hover:bg-white p-2 rounded-full transition"
           >
             
-           <Heart className={`w-5 h-5 ${ isLiked ? "fill-red-500 text-red-500" : "text-foreground"}`} />
+           <Heart className={`w-5 h-5 ${ optimisticLiked ? "fill-red-500 text-red-500" : "text-foreground"}`} />
           
           </button>)}</span>
           </div>

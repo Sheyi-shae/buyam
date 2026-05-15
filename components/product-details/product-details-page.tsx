@@ -1,20 +1,19 @@
 "use client"
 import { ProductDetail } from '@/types/users';
+import apiPublic from '@/utils/api-public';
 import { useFetchPublicData } from '@/utils/fetch-hooks';
+import { useQueryClient } from '@tanstack/react-query';
+import { RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef } from 'react';
-import LoadingSpinners from '../loading-spinners';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
+import ProductPageSkeleton from '../skeletons/product-page-skeleton';
+import AiEnquiry from './ai-enquiry';
 import DescriptionAndSpecs from './product-description-specs';
 import ProductGallery from './product-gallery';
 import ProductInfoPanel from './product-info-panel';
 import ProductReviews from './product-review';
 import SellerInfoCard from './seller-info-card';
-import apiPublic from '@/utils/api-public';
-import { useQueryClient } from '@tanstack/react-query';
-import AiEnquiry from './ai-enquiry';
-import ProductPageSkeleton from '../skeletons/product-page-skeleton';
-import { RefreshCcw } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import SimilarProducts from './similar-product';
 
 
@@ -128,7 +127,9 @@ if (isError) {
         </div>
 
         {/* Bottom Section (Recommendations) */}
-        <SimilarProducts/>
+        <SimilarProducts
+        productId={productDetail.id}
+        />
       </div>
 
       {/* ai enquiry */}

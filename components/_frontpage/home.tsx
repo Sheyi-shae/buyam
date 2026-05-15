@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryD } from '@/types/users';
+import { CategoryD, Product } from '@/types/users';
 import { useFetchPublicData } from '@/utils/fetch-hooks';
 import { ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
@@ -10,6 +10,8 @@ import CategorySections from './category-sections';
 import Hero from './hero';
 import HomeListings from './home-listings';
 import VerifiedVendors from './verified-vendors';
+import { useQuery } from '@tanstack/react-query';
+import apiPublic from '@/utils/api-public';
 
 
 
@@ -17,22 +19,34 @@ import VerifiedVendors from './verified-vendors';
 
 
 export default function Home() {
-  const { data, isLoading } = useFetchPublicData({
-    queryKey: "home-categories",
-    requestUrl:"/category"
+  // const { data, isLoading } = useFetchPublicData({
+  //   queryKey: "home-categories",
+  //   requestUrl:"/category"
+  // })
+
+  const {data, isLoading}= useQuery({
+    queryKey: ['home-categories'],
+    queryFn: async () => {
+      const res = await apiPublic.get('/category')
+      return res.data
+    },
+    retry: false,
+    
   })
+  
+  console.log("data",data)
 
 const category = useMemo(
-  () => (data as CategoryD[]) || [],
+  () => (data?.data as CategoryD[]) || [],
   [data]
 );
 
 const products = useMemo(
-  () => category?.flatMap(c => c.products),
-  [category]
+  () => (data?.feed as Product[]) || [],
+  [data]
 );
 
-  
+ 
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-amber-50">
@@ -51,7 +65,7 @@ const products = useMemo(
       </section>
 
      
-      <HomeListings products={products} />
+      <HomeListings products={products} isLoading={isLoading} />
 
      <VerifiedVendors/>
 

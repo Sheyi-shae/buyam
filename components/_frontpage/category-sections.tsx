@@ -79,7 +79,6 @@ const prevSlide = () => {
   return (
  
     
-        <SectionReveal>
           <section
         className="cat-section mt-10">
         
@@ -140,6 +139,8 @@ const prevSlide = () => {
 
           ): (
             
+            
+        <SectionReveal>
    <div
   className="relative w-full"
   onMouseEnter={() => setIsPaused(true)}
@@ -228,13 +229,14 @@ const prevSlide = () => {
     ))}
   </div>
 </div>
+              </SectionReveal>
           )}
 
            
 
             </div>
           </section>
-        </SectionReveal>
+     
      
   )
 }
