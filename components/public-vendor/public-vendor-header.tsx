@@ -51,7 +51,7 @@ export default function PublicVendorHeader({ vendorData }: { vendorData: VendorP
     const totalProducts = vendorData?.products?.length || 0;
   const sellRate = totalProducts > 0 ? (soldProducts.length / totalProducts) * 100 : 0;
   
-  console.log("vendor",vendorData)
+  //console.log("vendor",vendorData)
   return (
     <div className="mb-8">
       {/* Banner */}

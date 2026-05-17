@@ -53,7 +53,6 @@ const category = useMemo(
     return subCats;
   }, [category]);
 
-  console.log("Subcategories:", subCategories);
 
 const products = useMemo(
   () => (data?.feed as Product[]) || [],

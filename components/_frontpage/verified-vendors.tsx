@@ -54,7 +54,7 @@ export default function VerifiedVendors() {
                   <img
                     src={vendor.avatar}
                     alt={vendor.storeName || vendor.name}
-                    className="w-full h-full object-cover opacity-80"
+                    className="w-full h-full object-contain opacity-60"
                   />
                 </div>
                 <CardContent className="p-6 -mt-8 relative">

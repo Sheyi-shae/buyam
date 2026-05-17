@@ -45,7 +45,7 @@ export default function MessageChatArea({
 
 
 {
-  console.log("other user", selectedConversation?.user)
+  
   return (
     
     <div className="lg:col-span-2 shadow-sm border-r border-t border-b border-border  overflow-hiddenflex flex-col min-h-[calc(80vh-10rem)] bg-background">
@@ -111,7 +111,7 @@ export default function MessageChatArea({
  
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden z-10 p-4 space-y-4 max-h-[43vh] md:max-h-[50vh]">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden z-10 p-4 space-y-4 max-h-[48vh] md:max-h-[50vh]">
               {messages.map((message) => (
                 <div 
                   key={message.id} 

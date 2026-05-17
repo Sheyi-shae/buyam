@@ -112,7 +112,7 @@ if (isError) {
           <div className="md:col-span-2">
             <ProductGallery
               images={productDetail?.avatar}
-              username={productDetail.seller.name}
+              username={productDetail.seller.storeName || productDetail.seller.name}
             online={productDetail.seller.online}
             />
             <ProductInfoPanel productData={productDetail} />

@@ -32,7 +32,7 @@ export function useCurrentUser() {
   // Sync only when user is present — NO logout triggers
   useEffect(() => {
     if (query.data) {
-      console.log("user data",query.data)
+      //console.log("user data",query.data)
       setUser(query.data);
     }
   }, [query.data, setUser]);
