@@ -8,9 +8,9 @@ interface HomeTitleHeaderProps {
 export default function HomeTitleHeader({ title, desc }: HomeTitleHeaderProps) {
   return (
    
-                    <div className="relative mb-8 flex w-full items-center">
+                    <div className="relative  mb-8 flex w-full items-center">
   {/* Left Title Block */}
-  <div className="relative z-10 flex items-center gap-3 bg-white pr-5">
+  <div className="relative z-10 p-2 flex items-center gap-3 bg-white pr-5">
     
     {/* Accent */}
     <div className="h-10 w-1 rounded-full bg-gradient-to-b from-emerald-500 to-amber-400" />

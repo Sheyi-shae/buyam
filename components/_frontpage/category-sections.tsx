@@ -1,4 +1,4 @@
-import { CategoryD } from '@/types/users'
+import { CategoryD, SubCategory } from '@/types/users'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '../ui/badge'
@@ -12,7 +12,7 @@ const getItemCountLabel = (count: number) =>
   `${count.toLocaleString()} ${count === 1 ? 'listing' : 'listings'}`
 
 interface CategorySectionsProps {
-  category: CategoryD[]
+  category: SubCategory[]
   isLoading?: boolean
 }
 

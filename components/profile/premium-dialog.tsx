@@ -109,18 +109,6 @@ export default function PremiumDialog({user}: {user: User}) {
           <DialogContent className="sm:max-w-2xl max-h-[94vh] overflow-y-auto">
               <DialogTitle></DialogTitle>
  
-        <div className="text-center mb-2">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-100 to-yellow-100 mb-4">
-            <Crown className="w-8 h-8 text-amber-600" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">
-            Become a Verified Premium Vendor
-          </h1>
-          <p className="text-base text-gray-600">
-            Unlock exclusive benefits and grow your business on our platform
-          </p>
-        </div>
-
         
 
         

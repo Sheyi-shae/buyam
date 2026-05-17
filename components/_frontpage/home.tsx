@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryD, Product } from '@/types/users';
+import { CategoryD, Product, SubCategory } from '@/types/users';
 import { useFetchPublicData } from '@/utils/fetch-hooks';
 import { ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
@@ -34,12 +34,26 @@ export default function Home() {
     
   })
   
-  console.log("data",data)
+  
 
 const category = useMemo(
   () => (data?.data as CategoryD[]) || [],
   [data]
-);
+  );
+  
+  // get all subcategories from the categories
+
+  const subCategories = useMemo(() => {
+    const subCats: SubCategory[] = [];
+    category.forEach((cat) => {
+      if (cat.subcategories) {
+        subCats.push(...cat.subcategories);
+      }
+    });
+    return subCats;
+  }, [category]);
+
+  console.log("Subcategories:", subCategories);
 
 const products = useMemo(
   () => (data?.feed as Product[]) || [],
@@ -59,7 +73,7 @@ const products = useMemo(
           <Hero/>
 
                   {/* categories here */}
-       <CategorySections category={category} isLoading={isLoading} />
+       <CategorySections category={subCategories} isLoading={isLoading} />
                   
         </div>
       </section>

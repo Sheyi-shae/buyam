@@ -237,7 +237,7 @@ const uploadSingleFile = async (file: File, fingerprint: string) => {
   mediaPreview.length > 1 &&
   step1Fields.every(Boolean);
 
-  console.log(isStep2Complete)
+  //console.log(isStep2Complete)
   const canPublish =
     Boolean(isStep1Complete) &&
     Boolean(isStep2Complete)

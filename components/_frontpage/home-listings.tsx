@@ -37,7 +37,7 @@ export default function HomeListings({
        </div>
                 
                 ) : (
-                         <div className=" gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                         <div className=" gap-4 grid grid-cols-1 px-2 md:px-0 md:grid-cols-3 lg:grid-cols-4">
                     <CategoryProductCard
                         products={products} />
            
