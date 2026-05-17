@@ -1,37 +1,30 @@
-"use client";
-
-import { useQueryClient } from "@tanstack/react-query";
-import apiPrivate from "./api-private";
 import { useAuthStore } from "@/stores/auth-stores";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import apiPrivate from "./api-private";
 
 export const useBackendLogout = () => {
   const { setUser, logout: logoutFromStore } = useAuthStore();
   const queryClient = useQueryClient();
-  const router = useRouter(); 
-
 
   const logout = async () => {
     try {
-     
-    
-      setUser(null);
-      logoutFromStore();
-
       await apiPrivate.post("/auth/logout");
 
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      setUser(null);
+      logoutFromStore();
+      queryClient.clear();
+
+      // Cross-tab sync
+      localStorage.setItem("logout", Date.now().toString());
 
       toast.success("Logged out successfully");
 
-      localStorage.setItem("logout", Date.now().toString());
-
-      router.replace(
-        `/signin&signup-auth`
-      );
-    } catch (error) {
-      console.log(error);
+      // ← No redirect: marketplace users can keep browsing.
+      // If you need to redirect for certain pages (e.g. /dashboard),
+      // call router.replace("/") *only* inside those page components.
+    } catch {
+      toast.error("Failed to logout");
     }
   };
 

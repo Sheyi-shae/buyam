@@ -60,7 +60,7 @@ const ProductDetailsPage = ({slug}:{slug:string}) => {
   
 if (isError) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100 p-6">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-100 via-white to-amber-100 p-6">
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-xl backdrop-blur">
         
         <div className="flex flex-col items-center text-center">

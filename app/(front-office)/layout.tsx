@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import { NotificationProvider } from "@/providers/notification-provider";
 import { SocketProvider } from "@/providers/socket-provider";
 import { MobileFooter } from "@/components/_frontpage/mobile-footer";
+import { AuthModal } from "@/components/auth/auth-modal";
 
 
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Header />
             
             {children}
+            <AuthModal />
             <MobileFooter/>
         </NotificationProvider>
          </SocketProvider>

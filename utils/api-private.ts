@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { useAuthModalStore } from "@/stores/auth-modal-store";
+import { useAuthStore } from "@/stores/auth-stores";
 
 // ─── Env Validation ───────────────────────────────────────────────────────────
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -21,11 +23,9 @@ const processQueue = (error: unknown) => {
 // ─── Instance ─────────────────────────────────────────────────────────────────
 const apiPrivate: AxiosInstance = axios.create({
   baseURL: `${backendUrl}/api`,
-  withCredentials: true, // sends accessToken + refreshToken cookies automatically
+  withCredentials: true,
   timeout: 15000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
 // ─── Response Interceptor ─────────────────────────────────────────────────────
@@ -39,14 +39,10 @@ apiPrivate.interceptors.response.use(
     const is401 = error.response?.status === 401;
     const isRefreshRoute = original.url === REFRESH_URL;
 
-    // Don't intercept non-401s, already-retried requests, or the refresh route itself
     if (!is401 || original._retry || isRefreshRoute) {
       return Promise.reject(error);
     }
 
-    // ── Concurrent request handling ──
-    // If a refresh is already in progress, queue this request
-    // and wait for the refresh to complete before retrying
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
@@ -59,24 +55,19 @@ apiPrivate.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      
       await apiPrivate.post(REFRESH_URL);
-
-      // Unblock all queued requests
       processQueue(null);
-
-      // Retry the original request with the new accessToken cookie
       return apiPrivate(original);
     } catch (err) {
-      // Refresh failed — session is invalid, reject all queued requests
       processQueue(err);
 
-      // Redirect to login only if not already there
-      if (
-        typeof window !== "undefined" &&
-        !window.location.pathname.startsWith("/signin&signup-auth")
-      ) {
-        window.location.href = "/signin&signup-auth";
+      if (typeof window !== "undefined") {
+        // ✅ Clear auth state without redirecting
+        useAuthStore.getState().setUser(null);
+        useAuthStore.getState().logout();
+
+        // ✅ Open the modal — the user stays exactly where they are
+        useAuthModalStore.getState().openForExpiredSession();
       }
 
       return Promise.reject(err);

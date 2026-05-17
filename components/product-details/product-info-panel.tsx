@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import ProductContactSeller from './product-contact-seller';
 import ShareMenu from './share-menu';
+import { useAuthGate } from '@/utils/use-auth-gate';
 
 
 
@@ -41,6 +42,7 @@ export default function ProductInfoPanel({ productData }: { productData: Product
   const [showNumber, setShowNumber] = useState<boolean>(false);
   const [contactSeller, setContactSeller] = useState<boolean>(false);
   const [isLiking, setIsLiking] = useState(false);
+    const { requireAuth } = useAuthGate();
   const [optimisticLiked, setOptimisticLiked] = useState(
   productData.likes.some(
     (like) => like.userId === Number(user?.id)
@@ -125,7 +127,7 @@ const [optimisticLikesCount, setOptimisticLikesCount] = useState(
               <div className="flex items-center gap-4 text-sm">
                 {/* Like Button */}
                 <button
-                  onClick={() => toggleLike(productData.id)}
+            onClick={() => requireAuth(() => toggleLike(productData.id), "Sign in to like items")}
                   //disabled={isLiking}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150 hover:bg-slate-100 active:scale-95 disabled:opacity-50"
                   title="Like this product"

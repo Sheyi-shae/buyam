@@ -3,77 +3,72 @@
 import { useAuthStore } from "@/stores/auth-stores";
 import { useCurrentUser } from "@/utils/current-user-hook";
 import { useAppSocket } from "./socket-provider";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { ReactNode, useEffect, useRef } from "react";
 import { PageLoader } from "@/components/loading-spinners";
+import { useAuthModalStore } from "@/stores/auth-modal-store";
 
 interface AuthProviderProps {
   children: ReactNode;
   protection?: boolean;
-  msg?: string; 
+  msg?: string;
 }
 
-export function AuthProvider({ children, protection, msg = '' }: AuthProviderProps) {
+export function AuthProvider({ children, protection,  }: AuthProviderProps) {
   const { data: user, isLoading, error } = useCurrentUser();
   const { socket, isConnected } = useAppSocket();
   const { setUser } = useAuthStore();
-  const router = useRouter();
-  const pathname = usePathname();
-  // const searchParams = useSearchParams();
+  const { openForProtectedRoute, openForExpiredSession, close, isOpen } =
+    useAuthModalStore();
 
-  // const fullPath = searchParams.toString()
-  //   ? `${pathname}?${searchParams.toString()}`
-  //   : pathname;
-  const fullPath =
-  typeof window !== "undefined"
-    ? window.location.pathname + window.location.search
-    : pathname;
+  
+  const hadSession = useRef(false);
 
-  // Sync user state with Zustand store (regardless of protection)
+ 
+  // Sync user → store
   useEffect(() => {
     if (isLoading) return;
-    
     if (user) {
       setUser(user);
-    } else {
-      setUser(null);
+      hadSession.current = true;
+      // If modal was open (they just re-authed), close it
+      if (isOpen) close();
     }
-  }, [user, isLoading, setUser]);
+  }, [user, setUser, isLoading, isOpen, close]);
 
-  
-
-  // Handle protected route redirects
+  // Protected route
   useEffect(() => {
-    if (!protection) return;
-    if (isLoading) return;
-
+    if (!protection || isLoading) return;
     if (!user || error) {
-      router.replace(
-        `/signin&signup-auth?returnTo=${encodeURIComponent(fullPath)}&reason=AUTH_REQUIRED`
-      );
+      if (hadSession.current) {
+        openForExpiredSession();      
+      } else {
+        openForProtectedRoute();     
+      }
     }
-  }, [protection, isLoading, user, error, router, fullPath, msg]);
+  }, [protection, isLoading, user, error, openForExpiredSession, openForProtectedRoute]);
 
-  
+  // Socket room join
   useEffect(() => {
-    if (!user?.id) return;
-    if (!isConnected) return;
-
-    // Join user room once socket is connected
+    if (!user?.id || !isConnected) return;
     socket?.emit("join", user.id);
-  }, [user?.id, isConnected   ,socket]);
+  }, [user?.id, isConnected, socket]);
 
-
-  // Loading state
+  // Show full-screen loader while checking auth on protected routes
   if (protection && isLoading) {
-    return (
-      <PageLoader/>
-    );
+    return <PageLoader />;
   }
 
-  // Prevent flashing children before redirect
+  
   if (protection && !user) {
-    return null;
+    return (
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none blur-sm brightness-75 transition-all duration-300"
+      >
+        {children}
+      </div>
+    );
   }
 
   return <>{children}</>;

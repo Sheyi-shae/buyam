@@ -14,6 +14,9 @@ import { Send, Sparkles, Loader2, User, Bot } from "lucide-react"
 import apiPrivate from "@/utils/api-private"
 import { ProductDetail } from "@/types/users"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useAuthStore } from "@/stores/auth-stores"
+import Link from "next/link"
+import { useAuthGate } from "@/utils/use-auth-gate"
 
 export default function AiEnquiry({ product }: { product: ProductDetail }) {
   const [showHint, setShowHint] = useState(true)
@@ -23,6 +26,8 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuthStore()
+    const { requireAuth } = useAuthGate();
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -39,8 +44,22 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
     return () => clearTimeout(timer)
   }, [])
 
-  const sendMessage = async () => {
+  // each user can only ask 5 questions per product to prevent abuse
+
+  function canAsk() {
     
+    const userMessages = messages.filter(m => m.role === "user").length;
+    if (userMessages >= 5) {
+      setMessages(m => [...m, { 
+        role: "assistant", 
+        text: "You've reached the limit of 5 questions per item. You can message the seller directly." 
+      }])
+      return false
+    }
+    return userMessages < 5;
+  }
+  const sendMessage = async () => {
+    canAsk() 
     const userMsg = input.trim();
     if (!userMsg || isLoading) return;
 
@@ -60,6 +79,8 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
       setIsLoading(false);
     }
   };
+
+  
 
   return (
     <div className="fixed bottom-20 md:bottom-6 right-2 md:right-6 flex flex-col items-end gap-3 z-50">
@@ -94,7 +115,23 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
           {/* Chat Area */}
           <ScrollArea ref={scrollRef} className="flex-1 overflow-y-scroll p-4 bg-slate-50/30">
             <div className="flex overflow-y-scroll flex-col gap-4">
-              {messages.map((msg, i) => (
+              
+             
+
+              {isLoading && (
+                <div className="flex gap-2 items-center text-muted-foreground animate-pulse ml-10">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-xs">AI is thinking...</span>
+                </div>
+              )}
+
+              {!user ? (
+                <div className="flex items-center min-h-[50vh] justify-center">
+                  <span>Please <Link href={'/signin&signup-auth'} className="text-primary ml-1 mr-1">sign in</Link> to use Bella</span>
+              </div>
+              ) : (
+              <>
+                   {messages.map((msg, i) => (
                 <div key={i} className={`flex items-end gap-2 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === "user" ? "bg-amber-100" : "bg-white border"}`}>
                     {msg.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4 text-amber-600" />}
@@ -107,20 +144,17 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
                     {msg.text}
                   </div>
                 </div>
-              ))}
-              {isLoading && (
-                <div className="flex gap-2 items-center text-muted-foreground animate-pulse ml-10">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-xs">AI is thinking...</span>
-                </div>
+                   ))}
+                    </>
               )}
+                    
             </div>
           </ScrollArea>
 
           {/* Input Area */}
           <div className="p-4 bg-white border-t">
             <form 
-              onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
+              onSubmit={(e) => { e.preventDefault(); requireAuth(() =>sendMessage(), "Sign in to use Bella") }}
               className="relative flex items-center"
             >
               <Input
@@ -132,7 +166,7 @@ export default function AiEnquiry({ product }: { product: ProductDetail }) {
               <Button 
                 type="submit" 
                 size="icon" 
-                disabled={!input.trim() || isLoading}
+                disabled={!input.trim() || isLoading || !canAsk()}
                 className="absolute right-2 h-9 w-9 rounded-lg bg-emerald-500 hover:bg-emerald-600"
               >
                 <Send className="w-4 h-4" />
