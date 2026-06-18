@@ -15,7 +15,7 @@ const [activeTab, setActiveTab] = useState("store")
   // fetch user profile by public id
   const { data, isLoading } = useFetchPrivateData<VendorProfileProps>({
     queryKey: "user-profile",
-    requestUrl: `/user/vendor/${params.id}`,
+    requestUrl: `/user/vendor/public/${params.id}`,
      queryParams:`${params.id}`
     
   }) 
