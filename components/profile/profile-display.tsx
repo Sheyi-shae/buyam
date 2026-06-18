@@ -6,7 +6,7 @@ import apiPrivate, { parseErrorMessage } from "@/utils/api-private"
 import formatReadableDate from "@/utils/date-format"
 import { useQueryClient } from "@tanstack/react-query"
 import { motion } from "framer-motion"
-import { Calendar, Loader2, Mail, Pencil, PlusCircle, ShieldCheck } from "lucide-react"
+import { Calendar, Loader2, Mail, Pencil, PlusCircle, ShieldAlert, ShieldCheck } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -81,10 +81,23 @@ export function ProfileDisplay({ user, vendorProducts }: ProfileDisplayProps) {
             <div className="flex-1 space-y-1">
               <div className="flex items-center gap-3">
                 <h2 className="text-3xl font-serif tracking-tight">{user.name}</h2>
-                <div className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" />
-                  Verified
-                </div>
+                {user.verifiedSeller ? (
+                  <div className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1">
+             
+                    <ShieldCheck className="w-3 h-3" />
+                      Verified
+                  
+                  </div>
+                  
+                  ): (
+                    <div className="px-2 py-0.5 bg-red-100 text-red-500 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1">
+             
+                    <ShieldAlert className="w-3 h-3" />
+                      Unverified
+                  
+                  </div>
+                 )} 
+                
               </div>
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1.5">
