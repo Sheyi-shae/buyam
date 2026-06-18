@@ -1,6 +1,6 @@
 "use client"
 
-import LoadingSpinners, { EmptyStateLoader } from "@/components/loading-spinners"
+import { EmptyStateLoader } from "@/components/loading-spinners"
 import PublicVendorHeader from "@/components/public-vendor/public-vendor-header"
 import VendorPublicProfileTabs from "@/components/public-vendor/ven-public-tab"
 import { VendorProfileProps } from "@/types/users"
