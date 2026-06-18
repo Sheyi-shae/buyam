@@ -167,7 +167,7 @@ export default function PublicVendorHeader({ vendorData }: { vendorData: VendorP
 
               <div className="bg-amber-50 border border-border rounded-lg p-4">
                 <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Sell Rate</p>
-                <p className="text-xl font-bold text-emerald-600">{sellRate}%</p>
+                <p className="text-xl font-bold text-emerald-600">{Math.round(sellRate)}%</p>
               </div>
               
               <div className="bg-emerald-50 border border-border rounded-lg p-4">
